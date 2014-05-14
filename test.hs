@@ -17,3 +17,6 @@ render (d, bs) =
 test :: IO Tests -> IO ()
 test ts = ts >>= render
 
+assertEq :: Eq a => a -> a -> Tests -> IO Tests
+assertEq a b = assert $ a == b
+
