@@ -14,14 +14,19 @@ instance Eq Expr where
 subst :: Expr -> Expr -> Expr -> Expr
 subst (Var x) (Var a) b = if x == a then b else Var x
 subst (Var x) a b = Var x
-subst (Abstract x y) (Var a) b = if x == a then (Abstract x y) else (Abstract x (subst y (Var a) b))
+subst (Abstract x y) (Var a) b =
+  if x == a
+  then (Abstract x y)
+  else (Abstract x (subst y (Var a) b))
 subst (Abstract x y) a b = Abstract x (subst y a b)
 subst (Apply x y) a b = Apply (subst x a b) (subst y a b)
 
 reduce :: Expr -> Expr
 reduce (Apply (Abstract x y) a) =
   let subbed = subst y (Var x) a 
-  in if subbed == (Apply (Abstract x y) a) then subbed else reduce subbed
+  in if subbed == (Apply (Abstract x y) a)
+     then subbed
+     else reduce subbed
 reduce (Abstract x y) = Abstract x (reduce y)
 reduce x = x
 
