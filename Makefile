@@ -1,4 +1,4 @@
 all:
-	ghc redux.hs
+	ghc *.hs
 	./redux
 

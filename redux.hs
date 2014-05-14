@@ -1,4 +1,4 @@
-module Main where
+module Redux where
 
 data Expr = Abstract String Expr | Var String | Apply Expr Expr
 instance Show Expr where
@@ -24,9 +24,4 @@ reduce (Apply (Abstract x y) a) =
   in if subbed == (Apply (Abstract x y) a) then subbed else reduce subbed
 reduce (Abstract x y) = Abstract x (reduce y)
 reduce x = x
-
-main = putStrLn . show . reduce $
-  Apply
-    (Abstract "f" (Apply (Var "f") (Var "f")))
-    (Abstract "f" (Apply (Var "f") (Var "f")))
 
