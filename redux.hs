@@ -17,5 +17,11 @@ subst (Abstract x y) (Var a) b = if x == a then (Abstract x y) else (Abstract x 
 subst (Abstract x y) a b = Abstract x (subst y a b)
 subst (Apply x y) a b = Apply (subst x a b) (subst y a b)
 
-main = putStrLn . show $ (Abstract "x" (Var "x")) == (Abstract "y" (Var "y"))
+reduce :: Expr -> Expr
+reduce (Apply (Abstract x y) a) = subst y (Var x) a 
+reduce (Apply f x) = Apply (reduce f) (reduce x)
+reduce (Abstract x y) = Abstract x (reduce y)
+reduce x = x
+
+main = putStrLn . show . reduce $ Apply (Abstract "x" (Var "x")) (Abstract "x" (Var "x"))
 
